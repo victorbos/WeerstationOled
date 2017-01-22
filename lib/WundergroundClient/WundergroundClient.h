@@ -13,7 +13,6 @@ class WundergroundClient: public JsonListener {
     String date = "-";
     boolean isMetric = true;
     String currentTemp;
-	// JJG added ... ////////////////////////////////// define returns /////////////////////////////////
 	String moonPctIlum;  // not used
 	String moonAge;      // make this a long?
 	String moonPhase;
@@ -24,7 +23,6 @@ class WundergroundClient: public JsonListener {
 	String windSpeed;
 	String windDir;
 	String city;
-	// end JJG add ////////////////////////////////////////////////////////////////////////////////////
     String weatherIcon;
     String weatherText;
     String humidity;
@@ -52,6 +50,7 @@ class WundergroundClient: public JsonListener {
     void updateConditions(String apiKey, String language, String country, String city);
     void updateForecast(String apiKey, String language, String country, String city);
 	void updateAstronomy(String apiKey, String language, String country, String city); // JJG added
+
     String getHours();
     String getMinutes();
     String getSeconds();

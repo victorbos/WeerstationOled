@@ -132,7 +132,6 @@ void WundergroundClient::value(String value) {
     moonPhase = value;
   }
 
-
   if (currentParent == "sunrise") {      // Has a Parent key and 2 sub-keys
 	if (currentKey == "hour") {
 		int tempHour = value.toInt();    // do this to concert to 12 hour time (make it a function!)

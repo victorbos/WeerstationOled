@@ -7,7 +7,7 @@
 #include <Wire.h>
 
 #include "WundergroundClient.h"
-#include "TimeClient.h"
+// #include "TimeClient.h"
 #include "DhtClient.h"
 #include "ThingSpeakClient.h"
 
@@ -19,7 +19,7 @@
 SH1106  display(I2C_DISPLAY_ADDRESS, SDA_PIN, SDC_PIN);
 OLEDDisplayUi   ui( &display );
 
-TimeClient timeClient(UTC_OFFSET);
+// TimeClient timeClient(UTC_OFFSET);
 
 // Set to false, if you prefere imperial/inches, Fahrenheit
 WundergroundClient wunderground(IS_METRIC);
@@ -163,8 +163,8 @@ void updateData(OLEDDisplay *display) {
   }
 
   if (readyForConditionsUpdate) {
-    drawProgress(display, 10, "Updating time...");
-    timeClient.updateTime();
+    // drawProgress(display, 10, "Updating time...");
+    // timeClient.updateTime();
     drawProgress(display, 30, "Updating conditions...");
     wunderground.updateConditions(WUNDERGRROUND_API_KEY, WUNDERGRROUND_LANGUAGE, WUNDERGROUND_COUNTRY, WUNDERGROUND_CITY);
     readyForConditionsUpdate = false;
@@ -189,7 +189,8 @@ void updateData(OLEDDisplay *display) {
 void drawDateTime(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y) {
   display->setTextAlignment(TEXT_ALIGN_CENTER);
   display->setFont(ArialMT_Plain_24);
-  String time = timeClient.getFormattedTime();
+  // String time = timeClient.getFormattedTime();
+  String time = wunderground.getHours() + ":" + wunderground.getMinutes();
   display->drawString(64 + x, y, time);
 
   display->setFont(ArialMT_Plain_10);
@@ -232,7 +233,7 @@ void drawCurrentWeather(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t
 }
 
 void drawForecastToday(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y) {
-  if (timeClient.getHours() < "12") {
+  if (wunderground.getHours().toInt() < 12) {
     drawForecast( display, state, x, y, 0);
   } else {
     drawForecast( display, state, x, y, 2);
@@ -240,7 +241,7 @@ void drawForecastToday(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t 
 }
 
 void drawForecastTomorrow(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y) {
-  if (timeClient.getHours() < "12") {
+  if (wunderground.getHours().toInt() < 12) {
     drawForecast( display, state, x, y, 2);
   } else {
     drawForecast( display, state, x, y, 4);
@@ -254,7 +255,7 @@ void drawForecast(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, in
   display->drawString(x, y, weatherIcon);
 
   display->setFont(ArialMT_Plain_16);
-  display->drawString(x, 48 + y, wunderground.getForecastLowTemp(dayIndex) + "-" + wunderground.getForecastHighTemp(0) + "°C");
+  display->drawString(x, 48 + y, wunderground.getForecastLowTemp(dayIndex) + "|" + wunderground.getForecastHighTemp(0) + "°C");
 
   display->setFont(ArialMT_Plain_10);
   display->setTextAlignment(TEXT_ALIGN_RIGHT);
